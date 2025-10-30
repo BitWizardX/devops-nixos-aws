@@ -1,0 +1,81 @@
+#cloud-config
+
+apt:
+  primary:
+    - arches:
+        - default
+      uri: "https://cdn-aws.deb.debian.org/debian/"
+
+  security:
+    - arches:
+        - default
+      uri: "https://cdn-aws.deb.debian.org/debian-security/"
+
+write_files:
+  - path: /etc/apt/sources.list.d/debian.sources
+    content: |
+      Types: deb deb-src
+      URIs: mirror+file:///etc/apt/mirrors/debian.list
+      Suites: trixie trixie-updates trixie-backports
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+      Types: deb deb-src
+      URIs: mirror+file:///etc/apt/mirrors/debian-security.list
+      Suites: trixie-security
+      Components: main contrib non-free non-free-firmware
+      Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+    permissions: "0644"
+
+  - path: /etc/apt/keyrings/opentofu.gpg
+    content: |
+      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
+    permissions: "0644"
+    encoding: gz+b64
+
+  - path: /etc/apt/keyrings/opentofu-repo.gpg
+    content: |
+      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
+    permissions: "0644"
+    encoding: gz+b64
+
+  - path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    content: |
+      H4sIAAvTAmkAAwGwBE/7mQENBGMHoXcBCADukGOEQyleViOgtkMVa7hKifP6POCTh+98xNW4TfHK/nBJN2smu4XaiUmtB9UuGt9jl8VxQg4hOMRf40coIwHsNwtSrc2R9v5Kgpvcv537QVIigVHHWMNvXeoZkkoDIUljvbCEDWaEhS9R5OMYKd4AaJ+f1c8OELhEcV2dAQLLyjtnEaF/qmREN+3Y9+5VcRZvQHeyBxCG+hdUGE740ixgnY2gSqZ/J4YeQntQ6pMUEhT6pbaE10q2HUierj/im0V+ZUdCh46Lk/Rdfa5ZKlqYOiA2iN1coDPIdyqKavcdfPqSraKFLan2KLcZcgTxP+0+HfzKefvGEnZa11civbe9ABEBAAG0PmlzdjprdWJlcm5ldGVzIE9CUyBQcm9qZWN0IDxpc3Y6a3ViZXJuZXRlc0BidWlsZC5vcGVuc3VzZS5vcmc+iQE+BBMBCAAoBQJnFF34AhsDBQkIK2yBBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRAjRlTamilkNtOACACDK9dQ8CH2Ji9C3Q926nVMUiXdyJK1onCBrQSEBqdRLJaT6hGx5pzxkQGgUDpS9p7LA0u920HKLwGb7yIAWtyE5TAj2CYprGgpq98sfsGC+U5T9IrAdya/BaTAkkP6gNhfMjNaK3bOWsvuLRlluKMNch4ify+IwLqc1JLG40bj2HnKBGYkC3m0VtQfUuPQMImSLta/NwRHJMPo8jfGyManqMMxp35/ecP2rXMfb/l1WjFDY7h+6nqXay20ljMXkN23W8wFTdvC6lq45wwM5IBnKNR/TjNNYAIizZoHFWz1c/ecMWWWCB2S7WbY4xI3JSCOD4XIff3ie7pc68/kgPytiQIcBBMBAgAGBQJjB6F3AAoJEM8Lkoze1k873TQP/0t2F/jltLRQMG7VCLw7+ps5JCW5FIqu/S2i9gSdNA0E42u+LyxjG3YxmVoVRMsxeu4kErxr8bLcA4p71W/nKeqwF9VLuXKirsBC7z2syFiLNdl0ARnC3ENwuMVlSCwJO0MM5NiJuLOqOGYyD1XzSfnCzkXN0JGA/bfPRS5mPfoW0OHIRZFhqE7ED6wyWpHIKT8rXkESFwszUwW/D7o1HagX7+duLt8WkrohGbxTJ215YanOKSqyKd+6YGzDNUoGuMNPZJ5wTrThOkTzEFZ4HjmQ16w5xmcUISnCZd4nhsbSqN/UyV9Vu3lnkautS15E4CcjP1RRzSkT0jka62vPtAzw+PiGryM1F7svuRaEnJD5GXzj9RCUaR6vtFVvqqo4fvbA99k4XXj+dFAXW0TRZ/g2QMePW9cdWielcr+vHF4Z2EnsAmdvF7r5e2JCOU3N8OUodebU6ws4VgRVG9gptQgfMR0vciBbNDG2Xuk1WDk1qtscbfm5FVL36o7dkjA0x+TYCtqZIr4x3mmfAYFUqzxpfyXbSHqUJR2CoWxlyz72XnJ7UEo/0UbgzGzscxLPDyJHMM5Dn/Ni9FVTVKlALHnFOYYSTluoYACF1DMt7NJ3oyA0MELL0JQzEinixqxpZ1taOmVR/8pQVrqstqwqsp3RABaeZ80JbigUC29zJUVfqImj3bAEAAA=
+    permissions: "0644"
+    encoding: gz+b64
+
+  - path: /etc/apt/sources.list.d/opentofu.sources
+    content: |
+      Types: deb
+      URIs: https://packages.opentofu.org/opentofu/tofu/any/
+      Suites: any
+      Components: main
+      Signed-By:
+        /etc/apt/keyrings/opentofu.gpg
+        /etc/apt/keyrings/opentofu-repo.gpg
+    permissions: "0644"
+
+  - path: /etc/apt/sources.list.d/kubernetes.sources
+    content: |
+      Types: deb
+      URIs: https://pkgs.k8s.io/core:/stable:/v1.34/deb/
+      Suites: /
+      Components:
+      Signed-By: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    permissions: "0644"
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - btop
+  - ca-certificates
+  - curl
+  - git
+  - gnupg
+  - kubectl
+  - pipx
+  - python3-pip
+  - tofu
+  - unzip
