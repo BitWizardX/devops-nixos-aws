@@ -71,7 +71,7 @@ resource "aws_lb_target_group" "gitlab" {
 
 resource "aws_lb_target_group_attachment" "gitlab" {
   target_group_arn = aws_lb_target_group.gitlab.arn
-  target_id        = aws_instance.gitlab_server
+  target_id        = aws_instance.gitlab_server.id
   port             = 80
 }
 
