@@ -56,7 +56,7 @@ install_awscli() {
 
 install_ansible() {
   pipx install --include-deps ansible
-  pipx inject --include-apps ansible argcomplete
+  pipx inject --include-apps ansible argcomplete boto3 botocore
   su - "${TARGET_USER}" -c "activate-global-python-argcomplete --user"
 }
 
